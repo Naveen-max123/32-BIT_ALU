@@ -30,9 +30,27 @@ A Blank Document opens up into which the following source code can be typed.
 #### a)	To verify the Functionality using the Test Bench
 
 ## Source Code – Using Case Statement :
-
-(Include program here)
-
+```
+module alu_32bit_case(y,a,b,f);
+input [31:0]a;
+input [31:0]b;
+input [2:0]f;
+output reg [31:0]y;
+always@(*)
+begin
+case(f)
+3'b000:y=a&b; //AND Operation
+3'b001:y=a|b; //OR Operation
+3'b010:y=~(a&b); //NAND Operation
+3'b011:y=~(a|b); //NOR Operation
+3'b100:y=a^b; //XOR Operation
+3'b101:y=~(a^b); //XNOR Operation
+3'b110:y=~a; //NOT of a
+3'b111:y=~b; //NOT of b
+endcase
+end
+endmodule
+```
 Use the Save option or Ctrl+S to save the code, or click on the save option from the top-right corner and close the text file.
 
 ## Creating a Test Bench:
@@ -40,9 +58,29 @@ Use the Save option or Ctrl+S to save the code, or click on the save option from
 Similarly, create your test bench using gedit <filename_tb>.v to open a new blank document (alu_32bit_tb_case).
 
 ## Test Bench :
-
-(Include test bench program here)
-
+```
+module alu_32bit_tb_case;
+reg [31:0]a;
+reg [31:0]b;
+reg [2:0]f;
+wire [31:0]y;
+alu_32bit_case dut(.y(y),.a(a),.b(b),.f(f));
+initial
+begin
+a=32'h00000000;
+b=32'h10101010;
+#10 f=3'b000;
+#10 f=3'b001;
+#10 f=3'b010;
+#10 f=3'b011;
+#10 f=3'b100;
+#10 f=3'b101;
+#10 f=3'b110;
+#10 f=3'b111;
+#100 $finish;
+end
+endmodule
+```
 Use the Save option or Ctrl+S to save the code, or click on the save option from the top-right corner and close the text file.
 
 ## Functional Simulation:
@@ -57,6 +95,9 @@ source /cadence/install/cshrc (mention the path of the tools)
 
 After this, you can see the window like below
 
+<img width="1920" height="1200" alt="Screenshot (46)" src="https://github.com/user-attachments/assets/2302df24-9ee0-41a6-acb1-f4b1bc599186" />
+
+
 #### Fig 2: Invoke the Cadence Environment
 
 To Launch the Simulation tool
@@ -69,11 +110,19 @@ or
 
 It will invoke the nclaunch window for functional simulation. We can compile, elaborate and simulate it using Multiple Steps.
 
+<img width="1920" height="1200" alt="Screenshot (47)" src="https://github.com/user-attachments/assets/05e60c12-9ae1-434b-bca7-6dcf421fa57b" />
+
+
+
 #### Fig 3: Setting Multi-step simulation
 
 Select Multiple Step and then select “Create cds.lib File” as shown in the figure below
 
 Click the .cds.lib file and save the file by clicking on the Save option
+
+<img width="1920" height="1200" alt="Screenshot (48)" src="https://github.com/user-attachments/assets/7364cbd4-6791-4bf6-b970-6daed646b163" />
+
+
 
 #### Fig 4:cds.lib file Creation
 Save .lib file and select the correct option for cds.lib file format based on the HDL Language and Libraries used.
@@ -83,7 +132,11 @@ Select “Don’t include any libraries (verilog design)” from “New cds.lib 
 We are simulating a verilog design without using any libraries
 
 Click “OK” in the “nclaunch: Open Design Directory” window, as shown in the figure below
- 
+
+ <img width="1920" height="1200" alt="Screenshot (49)" src="https://github.com/user-attachments/assets/19ca7eb4-3aaa-4f8e-9ccf-f39885da1f94" />
+
+
+
 #### Fig 5: Selection of Don’t include any libraries
 An ‘NCLaunch window’ appears as shown in the figure below
 
@@ -92,6 +145,10 @@ Left side, you can see the HDL files. The right side of the window has Worklib a
 Worklib is the directory where all the compiled codes are stored, while Snapshot will have the output of elaboration, which in turn goes for simulation.
 
 To perform the function simulation, the following three steps are involved: Compilation, Elaboration and Simulation.
+
+<img width="1920" height="1200" alt="Screenshot (50)" src="https://github.com/user-attachments/assets/1715e89a-0497-4ce5-9471-cc09990cfacf" />
+
+
 
 #### Fig 6: Nclaunch Window
 
@@ -113,6 +170,10 @@ i.e Cadence IES command for compile: ncverilog +access+rwc -compile filename.v
 
 Left side select the file and in Tools: launch verilog compiler with current selection will get enable. Click it to compile the code
 Worklib is the directory where all the compiled codes are stored while Snapshot will have output of elaboration which in turn goes for simulation
+
+<img width="1920" height="1200" alt="Screenshot (51)" src="https://github.com/user-attachments/assets/d786c1b6-babd-4877-baaa-b550a01ea32c" />
+
+
 
 #### Fig 7: Compiled database in WorkLib
 After compilation, it will come under worklib. You can see on the right side window
@@ -143,6 +204,10 @@ Outputs: Elaborate database updated in the mapped library if successful, generat
 
 After elaboration, the file will come under snapshot. Select the test bench and simulate it.
 
+![WhatsApp Image 2025-10-18 at 10 34 45_c4b4d366](https://github.com/user-attachments/assets/203361be-e1b1-4cde-858e-e3d4f4917bc2)
+
+
+
 #### Fig 8: Elaboration Launch Option
 
 ### Step 3: Simulation:
@@ -156,7 +221,14 @@ Simulations allow dumping design and test bench signals into a waveform
 
 Steps for simulation – Run the simulation command with simulator options
 
+![WhatsApp Image 2025-10-18 at 10 34 45_fdcd3737](https://github.com/user-attachments/assets/53647098-b3d7-4325-94d3-2c20ef037bab)
+
+
+
 #### Fig 9: Design Browser window for simulation
+![WhatsApp Image 2025-10-18 at 10 31 39_4137a876](https://github.com/user-attachments/assets/66f6a1a8-c58d-46fd-9a1c-3fc99328aea6)
+
+
 
 #### Fig 10: Simulation Waveform Window
 
@@ -175,9 +247,20 @@ The Liberty files are present in the library path,
 
 • Genus Script file with .tcl file Extension commands are executed one by one to synthesize the netlist. Or use source run.tcl command in the terminal window to view the netlist, and a log file will be created in the working folder.
 
+
+
+<img width="1920" height="1200" alt="Screenshot (43)" src="https://github.com/user-attachments/assets/bfaa9daa-5851-476f-93b7-7b6425ef227e" />
+
 #### Fig 11: Synthesis RTL Schematic 
 
+<img width="1920" height="1200" alt="Screenshot (44)" src="https://github.com/user-attachments/assets/dfd0b78d-b5ec-447d-ac91-31e5a5cef594" />
+
+
 #### Fig 12: Area report
+<img width="1920" height="1200" alt="Screenshot (45)" src="https://github.com/user-attachments/assets/9787f398-623b-4d89-bf4f-20cf388c7aeb" />
+
+
+
 
 #### Fig 13: Power Report
 
